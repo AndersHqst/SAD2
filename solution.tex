@@ -1,0 +1,13 @@
+%!TEX root = ./report.tex
+\section{Solution}
+
+The solution is two fold and described in the following.
+
+\subsection{Point location in Voronoi}
+While there are existing algorithms for the two problems with good and optimal running times, an analysis of the two algoritms makes
+it clear that, for the scope of this project, it would not make much sense to look for an improvement or more elegant way of acomplishing what
+the two algorithm do. By realizing that the trapezoidal map simply reuires a random edge at the time until all edges have been traversed, makes it somewhat trivial to see that the running output of the voronoi algorithm can be used as input for the trapezoidal map algorithm. Seen in another way, while merging the two algorithm might be a learningful experience, it would in the general case make sense to just keep the two algorithms seperated and rund them in sequense, as the complexity and result is exactly the same. On the down side one could argue that merging them is just a minus as it simply makes the implementation harder to understand. In fact, by merging them we do save some nlognn computations, but unless we come up with some extreme case, we see this as a premature optimization. However, we find the task of combining the two of sufficient academic interest to have carried it through and provided an implementation. describe voronoi and how one needs to modify to the creation of segments upon circle events, maybe discuss why this is actually a final segment, refer to DCEL data structure and half edges not knowing their other ends. Describe the open source solution that we use, problems with it, and bridge it to our trapezoidal map implementation. Roud off with nice features of our trapezoidal map implementation. And show the simplicity in getting the tree DS from it for querying.
+
+\subsection{Expected Customers}
+%Expected number of hits by random shooting of points on the map. Chernoff expectation vs size of voron oi cells.
+
