@@ -46,12 +46,12 @@
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing to name a few. We are interested in analysing the composition of the voronoi diagram, as to say something interesting about the underlying data. In this paper we descibe have a data set containing the geographical location of a handful of fastfood restaurants can be analysed when representing them in a voronoi diagram. In particular, we provide background and solution for performing point location in a voronoi diagram by altering an existing open-source solution for generating the voronoi diagram, with our own implementation of trapezoidal map algorithm, to be able to perform point location in O(log n) time. The motivation for this is to be able to answer what fast-food restaurants a given set of geographical points, or maybe customers, are closest to. Secondly, we provide an analysis of the expected number of custmers that will end in the bigget voronoi cell when distributed randomly across the fast-food restaurant diagram. We find that such information querying on the target data set, could be of potential interest when dealing with location planning of new restaurants, or analysing customer behavior.
+Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing. We are interested in analysing the composition of the voronoi diagram to say something  about the underlying data that the diagram represents. In this paper we descibe a solution that generates a voronoi diagram from an arbitrary set of data points and returns a data structure for performing point location i O(log n) time in the generated diagram. The solution makes use of an existing open-source implementation of Fortunes algorithm for generating voronoi diagrams, which is merged with our own implementation of a trapezoidal map for performing point location. Querying the trapezoidal map data structure will return the site of the voronoi cell in which the query point lies. As a concrete example of the usefulness of this, we discuss how the algorithm could be used for answering point location queries on a data set of fast-food restaurants. The idea is that one could seek to answer questions like which restaurants would cover or attract the most customers, or, in general, which restaturant is closest to a given point of interest. Secondly, we provide an analysis of the expected number of customers that will end in the biggest voronoi cell when distributed randomly across the fast-food restaurant diagram. We find that such information querying on the target data set, could be of potential interest when dealing with location planning of new restaurants, or analysing customer behavior.
 
 \begin{figure}[t]
     \centering
-        \includegraphics[width=120mm]{images/voronoi_diagram.pdf}
-    \caption{A Voronoi Diagram with 12 sites}
+      \includegraphics[height=80mm]{images/voronoi_diagram.pdf}
+    \caption{A Voronoi Diagram with 15 sites}
     \label{fig:Pipes2IFCWorkflow}
 \end{figure}
 
