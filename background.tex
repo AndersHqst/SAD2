@@ -1,6 +1,60 @@
 %!TEX root = ./report.tex
 \section{Background}
 
-Basic description of voronoi diagrams and the algortihm. Refer to the book, but explain running time of Fortune vs slap approach and single shot. Describe circle events, how they end up and get pulled from the event queue and why they are important - segments are generated and we want to add them to the map when taht happens.
+In this section, we provide some background information on the 
+two algorithms that we work with and which we will later merge into one.
 
-Trapezoidal map. Maybe a bit more fine grained explanation. Refer to book for full detail, a few visual examples.
+\subsection{Fortunes Algorithm}
+Fortune’s algorithm is a “sweep line algorithm” that generates a Voronoi diagram from a set of sites, given as input, by sweeping a horizontal line from top to bottom of all the points of the input. The output is a set of edges in a DCEL  corresponding to the edges of a Voronoi diagram.
+
+\paragraph{}
+In general, the edges of a Voronoi diagram can be full lines or they can be line segments. In order to be able to store the edges of the result in a DCEL, the algorithm outputs all edges as segments. This is achieved by assuming that all sites are contained in a bounding rectangle that “cuts” off the lines that would otherwise be unbounded and only have one end point inside the rectangle.
+
+\paragraph{}
+To compute the diagram, the algorithm sweeps the line from the top of the rectangle and terminates when it reaches the bottom. During the sweep, two kinds of events can happen. 
+
+\subsubsection{Site events}
+happen when the sweep line hits a new site. When such an event happens it is possible to define a parabola with the “narrow end pointing downwards” and the site that created the event as its focal point. At this time, all the points that lie inside the parabola will be closer to the new site than to any other site lying below the sweep line.
+As soon as the sweep line reaches another site, a new parabola will be created and so on.
+
+\paragraph{}
+Since the points that form the intersections between two parabolas are equidistant to the sites lying inside their respective parabolas, these intersections must be part of the final Voronoi diagram by definition. Since the parabolas equations depend on the location of the sweep line, the parabolas will widen as the sweep line advances its position and the intersections will move as well and trace out the lines of the Voronoi diagram. Initially, when the sweep line is in the horizontal position of the new site, the parabola is just a vertical line crossing the site.
+
+\subsubsection{Circle events}
+happen when the sweep line reaches a position where it acts as a vertical tangent to a circle that also intersects two sites above the sweep line. At that time, a situation has occurred where three points with known positions are equidistant from a fourth point (the centre of the circle). Two of those three points are sites that lie above the sweep line and the third point is the bottom of the circle. Since the centre of the circle is equidistant from more than two points, it becomes a vertex in the Voronoi diagram.
+
+\paragraph{}
+During the sweep, the algorithm maintains the so-called beach line. Whenever two parabolas cross, a vertical line through the bounding rectangle will either cross the parabolas in a single point (one of their intersections) or in two. In the latter case, only the lowest of the points will contribute to the beach line. This means that the beach line consists of parabolic arcs, which each parabola can contribute to more than once.
+
+\paragraph{}
+It turns out that a circle event happens exactly when an arc of the beach line disappears because it is “hidden” by two neighbouring arcs. These arcs will grow faster than it self and the disappearing arc degenerates to a single point that forms the centre of the circle mentioned above.
+
+\subsubsection{Single Shot Algorithm}
+The single shot algorithm takes as input a set of line segments forming a planar sub division. It answers queries of the same type as the point location algorithm to be explained in the next section but has a time complexity of O(n) meaning that it is not optimal. 
+
+\paragraph{}
+Basically, what the algorithm does is to locate the line segment lying directly below the query point in the complete cell. If the segments are stored in a DCEL, the segment that was found can then be used to trace out the rest of the cell. To find the segment, the algorithm runs through the whole list and iteratively tries to find a better candidate by looking at the coordinates of the end points. An optimal (and valid) candidate will lie below the query point and be closer to it than any other segment lying below it. 
+
+\subsection{Point Location Algorithm}
+The point location algorithm takes the same input as the single shot algorithm and outputs (1) a trapezoidal map and (2) a search structure that can be used to answer point location queries in O(logn) time. In return for the improved “lookup” complexity, the algorithm will take O(nlogn) time to build the data structures. 
+
+\paragraph{}
+In addition to the slower running time, the algorithm makes the central assumption about the line segments of the input that they are in general position. For a set of segments to be in general position they cannot cross each other (they can share an end point though) and no two distinct end points can lie on a vertical line.
+
+\subsubsection{A trapezoidal map}
+T(S) of a planar subdivision represented as a list of segments S is created by erecting vertical lines (extensions) of each segment that “stop” when they hit an upper or lower segment. Each “box” of the resulting division will be known as a trapezoid and will have one or two vertical sides and exactly two non-vertical sides. Since any vertical side of a trapezoid is created as an extension of an end point and no two endpoints can lie on a vertical line, a trapezoid can be uniquely represented as two points (left and right point) and two line segments (upper and lower boundaries).
+
+\paragraph{}
+Two trapezoids are adjacent if the share a vertical side (an extension) and neighbours if they are adjacent and also share an upper or lower line segment. Any trapezoid in a trapezoidal map created from a set of line segments in general position can have at most 4 adjacent trapezoids and thereby at most 4 neighbours known as its upper left-, upper right-, lower left- and lower right neighbour.
+
+\subsubsection{The search structure}
+also referred to as D, is a binary search tree that contains nodes representing the end point of a line segment (X nodes), the segment itself (Y nodes) or a trapezoid (leafs). Since the tree is assumed to be balanced (consult the references for an argument of why this is true), a trapezoid containing a query point can be found in O(logn) as a path from the root to a leaf. 
+
+\paragraph{}
+To find a path, one starts at the root and proceeds according to an answer to a question that varies with the type of node. At an X node, one proceeds in the left sub tree if the query point lies to the left of the end point that the node represents and right otherwise. At a Y node, one goes right if the query point lies below the line segment that the node represents and left otherwise.
+
+\paragraph{}
+The point location algorithm is incremental in the sense that it starts with a blank map and a search tree containing only a single leaf (the rectangle or trapezoid that bounds the map). It then adds one edge to the map at a time and updates the search structures. To update the map, extensions are created from the end points of the newly added segment. If the segment intersects already existing extensions, these are shortened. To update the tree, the algorithm removes the leafs for the intersected trapezoids and adds leafs for the new ones that appear in the map.
+
+\paragraph{}
+Using information about the neighbours, a number of intersected trapezoids can be “merged” in time that is linear in the number of trapezoids involved which is assumed to be small. Furthermore, it is not dependent on number of segments in the input set. Updating therefore reduces to finding the left most intersected trapezoid. This can be done with a point location query in D and the left most end point of the newly added line segment in O(logn) time resulting in a global complexity of O(nlogn) where n is the number of segments in the input set.

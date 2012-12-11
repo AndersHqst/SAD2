@@ -1,9 +1,15 @@
 %!TEX root = ./report.tex
-\section{Plan For Future Work}
-\subsection{Future Work}
-\label{sec:future_work}
-Create a clean and generic voronoi implementation in .NET 4.x
-Find best point for planar location. Not trivial, would probably be Hawaii, but that would
-be winning a lot of oceanic area.
-\subsection{Something else?}
+\section{Future Work}
+
+In this project we created an algorithm that is able to answer questions useful for e.g. fast food restaurants. While the answers that the algorithm provides might are useful in many situations, a few initiatives exists that would make it even better and more stable. The first is a direct suggestion for improvement – the rest is more like “visions” that would make the algorithm applicable in a wider range of situations.
+
+\begin{itemize}
+	\item \textbf{Implementing Fortune's algorithm} from scratch in a recent target framework is something that would improve the overall quality of the solution significantly. Many of the problems and instabilities that we experienced during the implementation and testing of the final algorithm showed to emerge from the part of the code that comes from the online implementation.
+
+	\paragraph{}
+	\item \textbf{Computing the area of a Voronoi cell} is another feature that would make the algorithm more powerful. Knowing the area of cells enables queries like e.g. “Which chain of restaurants has the greatest market share?”. This of course requires some assumptions about demography etc. Computing the area of a Voronoi cell is easy if the diagram is represented in a DCEL since all line segments are known and each line segment in a cell forms a single triangle with the site as the third point. Due to this one-to-one mapping between line segments and triangles, the area of a single cell can be computed in time linear to the number of segments that bounds the cell.
+	\paragraph{}
+	\item \textbf{Parameterising the generation of the Voronoi diagram} is another idea for an extension. Using parameters one could let the area of a cell depend on certain characteristics of the site, like how popular a restaurant is, how many people is employed, which country is it located in etc.
+\end{itemize}
+
 
