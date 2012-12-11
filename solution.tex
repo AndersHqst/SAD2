@@ -2,7 +2,7 @@
 \section{Solution}
 The provided solution consumes a set of 2D points  $P$ and returns  $D$ for performing point location queries in a Voronoi diagram corresponding to $P$. The attached CD contains the implementation as C\# source code that builds against .NET 4.0. An example providing $P$ and querying $D$ can be found in the program main.  A parser and example for generating data points from  the geographical coordinates of a set of fast-food restaurants is included. 
 \paragraph{}
-The solution is based on the description provided in \cite{computational_geometry} on point location and Voronoi diagrams, and as such, we do not cover the everything in detail, but rather provide highligts of parts that we found to be tricky to get right.  The implementation of Fortunes algorithm is an open-source implementation that can be found at [cite to misc and codeplex project] . Also , the solution includes a simple GUI from [cise to misc and ref to other os project] that can be useed to visualize simple small-scale datasets.  The implementation of $T$ and $D$ is provided by the authors and our main work constitues in implementing these, besides briding with Fortunes algorithm.
+The solution is based on the description provided in \cite{computational_geometry} on point location and Voronoi diagrams, and as such, we do not cover the everything in detail, but rather provide highligts of parts that we found to be tricky to get right.  The implementation of Fortunes algorithm is an open-source implementation that can be found at [cite to misc and codeplex project] . Also , the solution includes a simple GUI from [cise to misc and ref to other os project] that can be useed to visualize simple small-scale datasets.  The implementation of $T$ and $D$ is provided by the authors and our main work constitues in implementing these, besides bridging with Fortunes algorithm.
 \paragraph{}
 One way of accomplishing what we want would be to simply take to the output of Fortunes algorithm, that is, the generated edges, and give them as input to the algorithm for the trapezoidal map. Both algorithms run in O(nlogn)  so the the complexity of running the two in sequence is the same. Alternatively we could add the edges to $T$ on the fly as the are found by Fortunes. It is easy to see that we will get the same complexity as we are virtually doing the same thing. To show this easy connecting of the two algorithms, the implementation demonstrates the latter.
 
@@ -67,7 +67,7 @@ $cur$ $\leftarrow$ $start$\;
 \caption{MergeUpper}\label{algo_disjdecomp}
 \end{algorithm}\DecMargin{1em}
 
-Doing a merge of the trapezoids below the inserted segment is done the same way, but with the neighbouring reference flipped horizontially. The last thing we need to do is to update $D$. 
+Doing a merge of the trapezoids below the inserted segment is done the same way, but with the neighbouring reference flipped horizontially. The last thing we need to do is to update $D$ with Algorithm~\ref{alg:INSERTMERGED}. One migt suspect that Algorithm~\ref{alg:MERGEUPPER} or Algorithm~\ref{alg:INSERTMERGED} could be in O(nlogn) in the number of segements and thus blow up the total running time, but as described in~\ref{background} this is not the case. Inserting a new segment is in O(logn). 
 
 \IncMargin{1em}
 \begin{algorithm}
