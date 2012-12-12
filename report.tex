@@ -4,6 +4,7 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
+\usepackage{float}
 \pagestyle{headings}
 \pagenumbering{roman}
 
@@ -47,16 +48,16 @@
 % Do we want to show our emails?
 \institute{IT University of Copenhagen, Rued Langgaards Vej 7, 2300 Copenhagen S, Denmark}
 
-
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing. By analysing the composition of the Voronoi diagram we can say something  about the underlying data that the diagram represents. In this paper we describe a solution that generates a Voronoi diagram from an arbitrary set of data points and returns a trapezoidal map for performing point location i O(log n) time. The solution makes use of an existing open source implementation of Fortunes algorithm for generating Voronoi diagrams, which is merged with our own implementation of an algorithm that generates the trapezoidal map. Querying the trapezoidal map data structure will return the site of the Voronoi cell in which the query point lies. We discuss concrete application domains where this could be useful. Finally, we show how the implementation of the merged algorithms can be used to estimate which cell is the biggest in the diagram.
+Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing. By analysing the composition of the Voronoi diagram we can say something  about the underlying data that the diagram represents. In this paper we describe a solution that generates a Voronoi diagram from an arbitrary set of data points and returns a trapezoidal map for performing point location i O(log n) time. The solution makes use of an existing open source implementation of Fortunes algorithm for generating Voronoi diagrams, which is merged with our own implementation of an algorithm that generates the trapezoidal map. Querying the trapezoidal map data structure will return the site of the Voronoi cell in which the query point lies. We discuss concrete application domains where this could be useful.
 
 \begin{figure}[t]
     \centering
-      \includegraphics[height=80mm]{images/voronoi_diagram.pdf}
-    \caption{A Voronoi Diagram with 15 sites}
+      \includegraphics[width=80mm]{images/voronoi_diagram.pdf}
+    \caption{A Voronoi Diagram with 15 sites. All vertices are are equidistant to 3 surrounding sites, and every point on an edge is equidistant to
+    to the two adjecent sites. }
     \label{fig:Pipes2IFCWorkflow}
 \end{figure}
 
