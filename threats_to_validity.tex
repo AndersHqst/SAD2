@@ -7,9 +7,9 @@ While we believe that our evaluation ultimately makes a valuable and sufficient 
 \subsection{Internal Threats}
 
 \begin{itemize}
-	\item In the current set up we apply our solution to 5 data sets of limited size whose results are manageable to deal with outside the algorithm. They all produced a correct result which provides a great deal of confidence in the correctness of the implementation. A better test would, however, involve more test cases…
+	\item In the current set up we apply our solution to 5 data sets of limited size whose results are manageable to deal with outside the algorithm. They all produced a correct result which provides a great deal of confidence in the correctness of the implementation. A better test would, however, involve more test cases.
 
-	\item Our solution is constructed from two separate and real-world algorithms for point location and Voronoi diagram generation. We implemented point location in C\# and found an implementation of Fortunes Algorithm online written in .NET 1.0. During the project we discovered that the latter implementation, in its original form, contained small errors and that some Voronoi cells of the output contained two or three sites instead of just one.
+	\item Our solution is constructed from two separate and real-world algorithms for point location and Voronoi diagram generation. We implemented point location in C\# and found an implementation of Fortunes Algorithm online written in .NET 1.0. During the project we discovered that the latter implementation, in its original form, contained errors and that some Voronoi cells of the output contained two or three sites instead of just one.
 
 \paragraph{}
 These erroneous cells are very small in number and always occur in positions adjacent to the boundaries of the diagram. The consequence of the error to our final product is that a lookup in the search tree with a query point contained in an erroneous cell will return a random site. In a real-world scenario the impact from this threat would be major but for the scope of this project we believe it is minor as we have identified the error and take it into account when designing our test cases.

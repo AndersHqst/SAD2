@@ -1,7 +1,7 @@
 %!TEX root = ./report.tex
 \section{Problem Statement}
-Fast food chains like McDonalds and Pizza Hut have restaurants geographically spread across the world. Such chains might be interested in providing location specific services to their customers, or analysing strategic placement of competitors. An example of such a service could be to let potential customers know which restaurant in their proximity is the closest. Due to the attractive structure of Voronoi cells, a Voronoi diagram could be a good way of representing the restaurants and the area they cover or influence. Combined with an algorithm for point location we can answer queries like the one given above.
-Since we can relate problems related to both Voronoi diagrams and point location in the world of fast food restaurants, we would like to investigate the fesability of combining the two algortihms. As an evaluation of the final algorithm, we implement it, and test it on a real world data set.
+Fast food chains like McDonalds and Pizza Hut have restaurants geographically spread out across the world. Such chains might be interested in analysing strategic placement of competitors or providing location specific services to their customers. An example of such a service could be to let potential customers know which restaurant in their proximity is the closest. Due to the attractive structure of Voronoi cells, a Voronoi diagram could be a suitable way of representing restaurants and the area they cover to answer such questions. Combined with an algorithm for point location we can answer queries like the one given above.
+Since we can identify problems related to both Voronoi diagrams and point location in the world of fast food restaurants, we would like to investigate the feasibility of combining the two algorithms. As an evaluation of the final algorithm, we implement it, and test it on a real world data set.
 
 \subsection{Desirable Features}
 \label{desirable_features}
@@ -15,7 +15,7 @@ Since we can relate problems related to both Voronoi diagrams and point location
 \label{assumptions}
 
 \begin{itemize}
-  \item We require that no two distinct endpoints of line segments in the input share the same x-coordinate. We do this because it is a simplifying assumption made by the original trapezoidal map algorithm. This means that every trapezoid can be uniquely represented in terms of their left point, right point, bottom segment and top segment. By extension every trapezoid can have at most four neighbours. It is clear that this assumption is unreasonable when working with real-world data. How to deal with input where such degenerate cases occur is described in \cite{computational_geometry}
+  \item We require that no two distinct endpoints of line segments in the input share the same x-coordinate. We do this because it is a simplifying assumption made by the original trapezoidal map algorithm. This means that every trapezoid can be uniquely represented in terms of their left point, right point, bottom segment and top segment. By extension, every trapezoid can have at most four neighbours. It is clear that this assumption is unreasonable when working with real-world data though. How to deal with input where such degenerate cases occur is described in \cite{computational_geometry}
 \end{itemize}
 
 
