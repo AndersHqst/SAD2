@@ -1,15 +1,24 @@
 %!TEX root = ./report.tex
 \section{Solution}
-The provided solution consumes a set of 2D points  $P$ and returns  $D$ for performing point location queries in a Voronoi diagram corresponding to $P$. The attached CD contains the implementation as C\# source code that builds against .NET 4.0. An example providing $P$ and querying $D$ can be found in the program main.  A parser and example for generating data points from  the geographical coordinates of a set of fast-food restaurants is included. 
+\subsection{Practical Info}
+Attached to this report you will find a CD containing the following.
+\begin{itemize}
+  \item The final implementation of the algorithm in C\# souce code that builds against .NET 4.0.
+  \item A comma seperated data set of the geographical locations of Pizza Hut, McDonalds and Burger King restaurants in the US.
+  \item A parser for the above data set.
+  \item An open source implementation of Fortune's algorithm \cite{fortunes}
+\end{itemize}
+
+\subsection{Overview}
+The solution is based on the description provided in \cite{computational_geometry} of point location and Voronoi diagrams, we do not describe everything in detail here, but refer to \cite{computational_geometry}. Instead we emphasize the steps we took to merge the algorithms, and solve the problems explained in our problem statement. The implementation of the trapezoidal map $T$ and the search tree $D$ is provided by the authors. Our main work constitutes the final merged algorithm and its implementation.
 \paragraph{}
-The solution is based on the description provided in \cite{computational_geometry} on point location and Voronoi diagrams, and as such, we do not cover the everything in detail, but rather provide highligts of parts that we found to be tricky to get right.  The implementation of Fortunes algorithm is an open-source implementation that can be found at [cite to misc and codeplex project] . Also , the solution includes a simple GUI from [cise to misc and ref to other os project] that can be useed to visualize simple small-scale datasets.  The implementation of $T$ and $D$ is provided by the authors and our main work constitues in implementing these, besides bridging with Fortunes algorithm.
-\paragraph{}
-One way of accomplishing what we want would be to simply take to the output of Fortunes algorithm, that is, the generated edges, and give them as input to the algorithm for the trapezoidal map. Both algorithms run in O(nlogn)  so the the complexity of running the two in sequence is the same. Alternatively we could add the edges to $T$ on the fly as the are found by Fortunes. It is easy to see that we will get the same complexity as we are virtually doing the same thing. To show this easy connecting of the two algorithms, the implementation demonstrates the latter.
+An obvious way of accomplishing the problem at hand, would be to run the two algorithms sequentially by taking the output from Fortune's algorithm, and feed it directly to the algorithm for the trapezoidal map. Both algorithms run in O(nlogn)  time so the complexity would the same. Instead, we merge the two algorithms by simply extracting the trapezoidal algorithm as a stepwise procedure which we then call in each iteration of Fortune's algorithm. It is easy to see that this does not result in any improvements in terms of complexity as we are virtually doing the same thing.  
 
 \subsection{Point location in Voronoi}
-$D$ is implemented with a standard composite-pattern, and offers a $Find(point)$ operation that will return a bounding trapezoid for the query point.  Recall that a trapezoid is simply defined by its side points and top and bottom segment. And as each segment is just a segment w egot from the Voronoi diagram, it holds a reference to the site of the voronoi cell. Fortunes algorithm adds this edge to site reference, and, eventually, it is the only way that trapezoid can tell which Voronoi cells it lies in. Of course, queies will only be precise when all segments have been added, and all trapezoids are completely trapped inside Voronoi cells.
+The search tree is implemented with a standard composite pattern, and offers a $FindTrapezoid(point)$ operation that will return the trapezoid containing the query point.  Recall that a trapezoid is simply defined by its side points and top and bottom segment. As each segment is just a segment we got from the Voronoi diagram, it holds a reference to the site of the voronoi cell. Fortunes algorithm adds this edge to site reference, and, eventually, it is the only way that trapezoid can tell which Voronoi cells it lies in. 
+
 \paragraph{}
-Each time a segment is discovered for the Voronoi diagram, it is inserted into the trapezoidal map, and $T$ is updated with new subtrees according to the new trapezoids that appear from the inserting the new segment. A this point a lot or re-wiring occurs, as new and existing trapezoids need to have their neighbourhoods re-wired correctly. One case of this is as seen in Figure~\ref{fig:contained_segment}. 
+Each time a segment is discovered in the Voronoi algorithm, it is inserted into the trapezoidal map, and $D$ is updated with new sub trees according to the trapezoids appearing from inserting the new segment. A this point a lot of re-wiring occurs, as new and existing trapezoids need to have their neighbourhoods updated correctly. An example of this is seen in Figure~\ref{fig:contained_segment}. 
 
 \begin{figure}[t]
     \centering
@@ -18,7 +27,7 @@ Each time a segment is discovered for the Voronoi diagram, it is inserted into t
     \label{fig:contained_segment}
 \end{figure}
 
-When the segment is contained in an existing trapezoid where we just need to make sure that we indetify what new trapezoids are created from inserting the segment, and updating $D$ with a corresponding subtree, which is somewat trival. In the case where a new segment crosses several existing trapezoids, things get a bit more tricky, and we will in the following explain how it can be solved.. The situation is depicted in Figure~\ref{fig:intersecting_segments}.\paragraph{}
+When the segment is contained in an existing trapezoid we need to make sure that we indetify the new trapezoids created from inserting the segment, and update $D$ with a corresponding subtree. In the case where a new segment crosses several existing trapezoids, things get a bit more tricky, and we will in the following explain how it can be solved. The situation is depicted in Figure~\ref{fig:intersecting_segments}.\paragraph{}
 
 \begin{figure}[t]
     \centering
@@ -27,7 +36,7 @@ When the segment is contained in an existing trapezoid where we just need to mak
     \label{fig:intersecting_segments}
 \end{figure}
 
-\cite{computational_geometry} provides an good high-level description of how to handle this situation and states that it is done in linear time, which is possible as we can find neighbouring trapezoids by jumping from one trapezoid to the next by neighbour references - we do not need to look up neighbouring trapezoids in $D$. Now to handle the different case of the position of the inserted segment, we can start out by taking care of the boundries when one or both of the new segment's endpoints are connected to existing vertices, which is handled much like the the contained case. Secondly, we have to create new trapezoids that are, in some sense, horizontial merges of existing trapezoids. As an example, in Figure~\ref{fig:intersecting_segments}, we create  trapezoid $C$ with a left point from $\Delta 1$, a right point that will be the right most vertex of the newly inserted segment left most vertex, top being the new segment, and bottom being the the segment shared by  $\Delta 1$,  $\Delta 2$ and  $\Delta 3$.  Our solution to this is to always handle $\Delta 0$ and $\Delta 3$ in isolation, that is, add trapezoids much like with the case of the contained segment, and set the neighbourhoods. Secondly we do a recursive merge of the new trapezoids above the inserted segment, and under the segment. The pseudo code for doing an upper merge is show in Algorithm~\ref{alg:MERGEUPPER}.
+\cite{computational_geometry} provides a good high level description of how to handle this situation and states that the whole operation can be done in linear time, which is possible because we can find neighbouring trapezoids by following pointers from one trapezoid to the next  - we do not need to look up neighbouring trapezoids in $D$. To handle the different cases of the position of the inserted segment, we start out by taking care of the boundaries when one or both of the new segment's endpoints are connected to existing vertices, which is handled much like the contained case. Secondly, we have to create new trapezoids. As an example, in Figure~\ref{fig:intersecting_segments}, we create a  trapezoid $C$ with a left point from $\Delta 1$, a right point that will be the right most vertex of the newly inserted segment, the top will be the new segment, and the bottom will be the segment shared by  $\Delta 1$,  $\Delta 2$ and  $\Delta 3$.  Our solution to this is to always handle $\Delta 0$ and $\Delta 3$ first in isolation, i.e. adding trapezoids much like with the case of the contained segment, and set the neighbourhoods. Secondly we do a recursive merge of the old trapezoids above the inserted segment, and under the segment. The pseudo code for the upper merge is shown in Algorithm~\ref{alg:MERGEUPPER}.
 
 
 \IncMargin{1em}
@@ -57,7 +66,7 @@ $cur$ $\leftarrow$ $start$\;
 	}
 }
 \BlankLine
-\nl\If{$cur.rightPoint$ is before end of segment}{
+\nl\If{$cur.rightPoint.X$ $\textless$ $segment.RightMostVertex.X$}{
         next $\leftarrow$ $MergeUpper(cur.LRN, segment,  cur.rightPoint)$\;
         $t.LRN$  $\leftarrow$ $next.First$\;
         $t.URN$ $\leftarrow$ $cur.URN$\;
@@ -67,7 +76,7 @@ $cur$ $\leftarrow$ $start$\;
 \caption{MergeUpper}\label{algo_disjdecomp}
 \end{algorithm}\DecMargin{1em}
 
-Doing a merge of the trapezoids below the inserted segment is done the same way, but with the neighbouring reference flipped horizontially. The last thing we need to do is to update $D$ with Algorithm~\ref{alg:INSERTMERGED}. One migt suspect that Algorithm~\ref{alg:MERGEUPPER} or Algorithm~\ref{alg:INSERTMERGED} could be in O(nlogn) in the number of segements and thus blow up the total running time, but as described in~\ref{background} this is not the case. Inserting a new segment is in O(logn). 
+A merge of the trapezoids below the inserted segment is done in the same way, but with the neighbouring reference flipped horizontially. The last thing we need to do is to update $D$ with Algorithm~\ref{alg:INSERTMERGED}. One might suspect that Algorithm~\ref{alg:MERGEUPPER} or Algorithm~\ref{alg:INSERTMERGED} could be in O(nlogn) in the number of segments and thus blow up the total running time, but as described in Section~\ref{background} this is not the case. Inserting a new segment is done in O(logn). 
 
 \IncMargin{1em}
 \begin{algorithm}

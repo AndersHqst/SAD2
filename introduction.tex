@@ -11,23 +11,16 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \section{Introduction}
-This report is written at the IT University of Copenhagen in the fall term of 2012 in connection with the SAD2 project supervised by Rasmus Pagh. In the following pages we define an algorithmic problem, give examples of domains where this problem could be found and provide a solution to it. The solution is based on the concept of Voronoi diagrams and the problem of finding an area in a planar sub division that contains a specific point (Point Location).
+\label{introduction}
+This report is written at the IT University of Copenhagen in the fall term of 2012 in connection with the SAD2 project supervised by Rasmus Pagh. In the following pages we define an algorithmic problem, give examples of domains where this problem could be found and provide a solution to it. The solution is based on the concept of Voronoi diagrams and the problem of finding an area in a planar subdivision that contains a specific point.
+The reader of the report is not assumed to have any prior knowledge of Voronoi diagrams or point location. However, we recommend to study the literature from the references as the project is based on these and we will only present the main concepts.
 
-\paragraph{}
-The reader of the report is not assumed to have any prior knowledge of Voronoi diagrams and Point Location. However, he or she should read the literature from the references as we will only present the main concepts of the algorithms that we work with and which also provides the foundation for the project.
+A planar subdivision is a division of a two-dimensional surface into non-overlapping cells. An example of this, maps can be divided into regions of longitude and latitude intervals. Given a geographic position (a query point), a point location query in a map would return the cell that contains the query point. Such queries could be useful when you want to know certain properties of the area you are in, say currents in the water, location specific weather forecasts or simply which country you are in. 
 
-\paragraph{}
-A planar subdivision is a division of a two-dimensional surface into non-overlapping cells. As an example, maps are usually divided into squares each identified by a number and a letter or 2 coordinate intervals (longitude, latitude). Given a geographic position (a query point), a point location query in a map would return the cell that contains the query point. Such queries could be useful e.g. when you want to know certain properties of the area you are in, say currents in the water, location specific weather forecasts or whatever. 
-
-\paragraph{}
 Even though cells of a map usually have certain properties like being rectangular and equally sized, these properties are not required for the principle of point location to work. 
 
 \paragraph{}
-A Voronoi diagram is a special case of a planar subdivision created from a set of points of interest – normally referred to as “sites”. Every cell in a Voronoi diagram contains exactly one site. Furthermore, every point that lies in the same cell representing a site S share the property that they are closer to S than to any other site in the diagram. Resulting from this property, every point that lies on the boundary of two or more Voronoi cells are equidistant from the sites of the neighbouring cells.
-
-\paragraph{}
-Due to these rather generic properties, Voronoi diagrams have found applications within a big number of domains including Biology, Mathematics, Geography, Route Planning etc. 
+A Voronoi diagram is a special case of a planar subdivision created from a set of points of interest – normally referred to as $sites$. Every cell in a Voronoi diagram contains exactly one site. Furthermore, every point that lies in the same cell representing a site S share the property that they are closer to S than to any other site in the diagram. By extension every point that lies on the boundary of two or more Voronoi cells are equidistant from the sites of the neighbouring cells. Due to these rather generic properties, Voronoi diagrams have found applications within a big number of domains including Biology, Mathematics, Geography, Route Planning etc. 
 
 \paragraph{}
 In this report we focus on the domain of fast food restaurants, i.e. we seek to answer queries that might be relevant to a chain of restaurants like McDonalds or to a customer. Examples of such queries could be “What would be a good location for us to place a new restaurant?” or from the view of a customer “What is the nearest fast food restaurant?”. When answering these queries, we will make enough assumptions about the domain to be sure that a deterministic answer exists.
-

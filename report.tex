@@ -4,6 +4,8 @@
 \usepackage[ruled,vlined]{algorithm2e}
 \usepackage[utf8]{inputenc}
 \usepackage{pdfpages}
+\pagestyle{headings}
+\pagenumbering{roman}
 
 % \usepackage[nottoc,numbib]{tocbibind}
 % \usepackage[center]{caption}
@@ -49,7 +51,7 @@
 \maketitle              % typeset the title of the contribution
 
 \begin{abstract}
-Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing. We are interested in analysing the composition of the voronoi diagram to say something  about the underlying data that the diagram represents. In this paper we descibe a solution that generates a voronoi diagram from an arbitrary set of data points and returns a data structure for performing point location i O(log n) time in the generated diagram. The solution makes use of an existing open-source implementation of Fortunes algorithm for generating voronoi diagrams, which is merged with our own implementation of a trapezoidal map for performing point location. Querying the trapezoidal map data-structure will return the site of the voronoi cell in which the query point lies.  Secondly, we use the point location as basis for an analysis of the expected number of query points that will end in the biggest voronoi cell when distributed randomly across the diagram. We discuss why performing point location on Voronoi diagrams could of interest in various domains.
+Voronoi diagrams are used in a variety of contexts in mathematics, biology and computing. By analysing the composition of the Voronoi diagram we can say something  about the underlying data that the diagram represents. In this paper we describe a solution that generates a Voronoi diagram from an arbitrary set of data points and returns a trapezoidal map for performing point location i O(log n) time. The solution makes use of an existing open source implementation of Fortunes algorithm for generating Voronoi diagrams, which is merged with our own implementation of an algorithm that generates the trapezoidal map. Querying the trapezoidal map data structure will return the site of the Voronoi cell in which the query point lies. We discuss concrete application domains where this could be useful. Finally, we show how the implementation of the merged algorithms can be used to estimate which cell is the biggest in the diagram.
 
 \begin{figure}[t]
     \centering
@@ -59,7 +61,7 @@ Voronoi diagrams are used in a variety of contexts in mathematics, biology and c
 \end{figure}
 
 
-\keywords{algorithms, computational geometry, point location, software development}
+\keywords{algorithms, Voronoi diagram, point location, computational geometry, software development}
 \end{abstract}
 
 % Number the first pages with Roman numbers
